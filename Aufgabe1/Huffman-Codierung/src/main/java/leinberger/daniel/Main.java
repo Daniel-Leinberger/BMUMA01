@@ -84,6 +84,14 @@ public class Main {
 
     }
 
+    /**
+     * Ein linker Knoten erhält die Zahl 0. Ein rechter Knoten die Zahl 1.
+     * Trifft der Code auf ein Blatt oder gibt es in keinen der beiden Knoten einen passenden String, so wird -1 übergeben,
+     * um zu symbolisieren, dass das Ende der Suche erreicht wurde
+     * @param node
+     * @param character
+     * @return
+     */
     private static Map.Entry<Node, Integer> leftOrRightNode(Node node, String character)
     {
         if(!node.isLeaf())
