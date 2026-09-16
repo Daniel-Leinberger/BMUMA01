@@ -1,13 +1,17 @@
 package main.java.leinberger.daniel;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         String text = "Das ist ein kurzer Satz";
+        System.out.println("----- Teilaufgabe E -----");
         Map<String, Integer> h = histogram(text);
-        System.out.println(h);
+        System.out.println(h+"\n");
+
+        System.out.println("----- Teilaufgabe F -----");
+        Node root = createHuffmanTree(text);
+        System.out.println("Root-Knoten heißt: "+root.getCharacter()+"\n");
     }
 
     public static Map<String, Integer> histogram(String text)
@@ -24,4 +28,43 @@ public class Main {
 
         return map;
     }
+
+    public static Node createHuffmanTree(String sentence)
+    {
+        Map<String, Integer> map = histogram(sentence);
+        //https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html
+        PriorityQueue<Node> queue = new PriorityQueue<>(Comparator.comparingDouble(Node::getProbability));
+
+        double totalCharacters = sentence.length();
+
+        map.forEach((key, value) -> queue.add(new Node(key, value, totalCharacters)));
+
+        leafsToRoot(queue);
+
+        return queue.poll();
+    }
+
+    /**
+     * Arbeitet sich durch die Queue der Leafes und erstellt solange Knoten bis der Root des Huffman-Codebaums erreicht wurde.
+     * @param queue
+     * @return queue mit einem einzigen Element -> Dem root der Huffman-Codebaums
+     */
+    private static void leafsToRoot(PriorityQueue<Node> queue) {
+        while(queue.size()>1)
+        {
+            Node left = queue.poll();
+            Node right = queue.poll();
+
+            System.out.println("Connecting "+left.getCharacter()+" and "+right.getCharacter());
+
+            Node parent = new Node();
+            parent.setCharacter(left.getCharacter()+" "+right.getCharacter());
+            parent.setProbability(left.getProbability()+right.getProbability());
+            parent.setLeftNode(left);
+            parent.setRightNode(right);
+
+            queue.add(parent);
+        }
+    }
+
 }
