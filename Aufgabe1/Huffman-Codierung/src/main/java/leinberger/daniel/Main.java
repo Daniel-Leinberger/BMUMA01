@@ -12,6 +12,11 @@ public class Main {
         System.out.println("----- Teilaufgabe F -----");
         Node root = createHuffmanTree(text);
         System.out.println("Root-Knoten heißt: "+root.getCharacter()+"\n");
+
+        System.out.println("----- Teilaufgabe G -----");
+        h.forEach((key, value)->
+                System.out.println("Der Code für das Zeichen "+key+" ist: "+getCharacterCode(root,key,new StringBuilder()))
+        );
     }
 
     public static Map<String, Integer> histogram(String text)
@@ -67,4 +72,38 @@ public class Main {
         }
     }
 
+    public static String getCharacterCode(Node node, String character, StringBuilder sb)
+    {
+        Map.Entry<Node, Integer> entry = leftOrRightNode(node, character);
+        if(entry.getValue() != -1)
+        {
+            sb.append(entry.getValue());
+            getCharacterCode(entry.getKey(), character, sb);
+        }
+        return sb.toString();
+
+    }
+
+    private static Map.Entry<Node, Integer> leftOrRightNode(Node node, String character)
+    {
+        if(!node.isLeaf())
+        {
+            if(node.getLeftNode().getCharacter().contains(character))
+            {
+                return new AbstractMap.SimpleEntry<>(node.getLeftNode(), 0);
+            }
+            else if(node.getRightNode().getCharacter().contains(character))
+            {
+                return new AbstractMap.SimpleEntry<>(node.getRightNode(), 1);
+            }
+            else
+            {
+                return new AbstractMap.SimpleEntry<>(node, -1);
+            }
+        }
+        else
+        {
+            return new AbstractMap.SimpleEntry<>(node, -1);
+        }
+    }
 }

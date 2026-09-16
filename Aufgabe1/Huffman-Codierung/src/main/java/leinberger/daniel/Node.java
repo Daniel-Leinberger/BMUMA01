@@ -12,6 +12,11 @@ public class Node {
         this.probability = count / totalCountOfCharacters;
     }
 
+    public boolean isLeaf()
+    {
+        return leftNode == null && rightNode==null;
+    }
+
     public String getCharacter() {
         return character;
     }
@@ -34,5 +39,13 @@ public class Node {
 
     public void setRightNode(Node rightNode) {
         this.rightNode = rightNode;
+    }
+
+    public Node getLeftNode() {
+        return leftNode;
+    }
+
+    public Node getRightNode() {
+        return rightNode;
     }
 }
