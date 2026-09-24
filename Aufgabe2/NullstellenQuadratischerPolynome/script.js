@@ -25,7 +25,7 @@ function nullstellenBerechnen(a, b, c)
     {
         let polynom = b+"x+"+c;
         text = "a = 0! Daher ändert sich das Polynom zu: "+polynom+"<br>";
-        text+="x= "+einzelneNullstelle(c, b);
+        text+="x= "+geradenBerechnung(b, c);
     }
     else
     {
@@ -52,7 +52,7 @@ function nullstellenBerechnen(a, b, c)
     result.innerHTML = text;
 }
 
-function einzelneNullstelle(c, b)
+function geradenBerechnung(b, c)
 {
     let x = 0;
     if(b!=0)
