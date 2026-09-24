@@ -28,10 +28,14 @@
 
 <div class="calculate_button">
     <br>
-    <button type="button">Nullstellen berechnen</button>
+    <button type="button" onclick="nullstellenBerechnen(
+        document.getElementById('input_a').valueAsNumber,
+        document.getElementById('input_b').valueAsNumber,
+        document.getElementById('input_c').valueAsNumber
+    )">Nullstellen berechnen</button>
 </div>
 
-<p id="result"></p>
+<div id="result"></div>
 
 </body>
 </html>
