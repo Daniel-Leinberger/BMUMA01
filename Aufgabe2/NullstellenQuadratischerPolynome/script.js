@@ -49,7 +49,36 @@ function nullstellenBerechnen(a, b, c)
         }
     }
 
+    paintCanvas(a,b,c,nullstellen);
     result.innerHTML = text;
+}
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @param {number} c
+ * @param {any[]} nullstellen
+ */
+function paintCanvas(a, b, c, nullstellen){
+    const canvas = document.getElementById("polynom_canvas");
+    const context = canvas.getContext("2d");
+    const min = -10;
+    const max = 10;
+    const toCanvasX = function (x) {
+        return (x + (max - min) / 2) * canvas.width / (max - min);
+    };
+    const toCanvasY = function (y) {
+        return canvas.height - (y + (max - min) / 2) * canvas.height / (max - min);
+    };
+
+    context.beginPath();
+    context.moveTo(toCanvasX(-10), toCanvasY(0));
+    context.lineTo(toCanvasX(10), toCanvasY(0));
+    context.moveTo(toCanvasX(0), toCanvasY(10));
+    context.lineTo(toCanvasX(0), toCanvasY(-10));
+    context.stroke();
+    return;
+
 }
 
 function geradenBerechnung(b, c)
