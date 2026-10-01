@@ -140,24 +140,11 @@ function paintPolynom(a,b,c)
 
     for(let x=min+0.1; x<=max; x+=0.1)
     {
-        let y = roundToTwoDecimals(calculateY(x));
-        context.lineTo(toCanvasX(x),toCanvasY(y));
+        context.lineTo(toCanvasX(x),toCanvasY(calculateY(x)));
     }
 
     context.stroke();
 }
-
-/**
- * Rundet die Zahl auf 2 Nachkommastellen auf basis von
- * https://www.gutefrage.net/frage/javascript-aufrunden-auf-2-nachkommastellen
- * @param x
- * @returns {number}
- */
-function roundToTwoDecimals(x)
-{
-    return Math.round(x*100)/100;
-}
-
 
 /**
  * Zeichnet die Nullstellen als rote Kreise mit Radius 3 ein
