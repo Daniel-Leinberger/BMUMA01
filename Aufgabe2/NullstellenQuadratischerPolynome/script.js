@@ -116,11 +116,11 @@ function paintCanvas(a, b, c,nullstellen){
     context.beginPath();
 
     //X
-    context.moveTo(toCanvasX(-10), toCanvasY(0));
-    context.lineTo(toCanvasX(10), toCanvasY(0));
+    context.moveTo(toCanvasX(min), toCanvasY(0));
+    context.lineTo(toCanvasX(max), toCanvasY(0));
     //Y
-    context.moveTo(toCanvasX(0), toCanvasY(10));
-    context.lineTo(toCanvasX(0), toCanvasY(-10));
+    context.moveTo(toCanvasX(0), toCanvasY(max));
+    context.lineTo(toCanvasX(0), toCanvasY(min));
 
     context.stroke();
 
