@@ -114,45 +114,71 @@ function paintCanvas(a, b, c,nullstellen){
 
     context.clearRect(0,0,canvas.width, canvas.height);
     context.beginPath();
+
+    //X
     context.moveTo(toCanvasX(-10), toCanvasY(0));
     context.lineTo(toCanvasX(10), toCanvasY(0));
+    //Y
     context.moveTo(toCanvasX(0), toCanvasY(10));
     context.lineTo(toCanvasX(0), toCanvasY(-10));
+
     context.stroke();
 
-    if(a==0)
-    {
-       paintLine(b,c);
-    }
-    else
-    {
-        paintPolynom(a,b,c);
-    }
+    paintPolynom(a,b,c);
+
     paintNullstellen(nullstellen);
 }
 
-function paintLine(b, c) {
+function paintPolynom(a,b,c)
+{
+    let calculateY = howToCalculateY(a, b, c);
+
     context.beginPath();
-    context.moveTo(toCanvasX(min),toCanvasY(b*min+c));
+    context.moveTo(toCanvasX(min),toCanvasY(calculateY(min)));
+
     for(let x=min+0.1; x<=max; x+=0.1)
     {
-        let y = roundToTwoDecimals(b*x+c);
+        let y = roundToTwoDecimals(calculateY(x));
         context.lineTo(toCanvasX(x),toCanvasY(y));
     }
+
     context.stroke();
 }
 
-function paintPolynom(a, b, c) {
-    context.beginPath();
-    context.moveTo(toCanvasX(min),toCanvasY(a*Math.pow(min,2)+b*min+c));
-    for(let x=min+0.1; x<=max; x+=0.1)
-    {
-        let y = roundToTwoDecimals(a*Math.pow(x,2)+b*x+c);
-        context.lineTo(toCanvasX(x),toCanvasY(y));
-    }
-    context.stroke();
+/**
+ * Rundet die Zahl auf 2 Nachkommastellen auf basis von
+ * https://www.gutefrage.net/frage/javascript-aufrunden-auf-2-nachkommastellen
+ * @param x
+ * @returns {number}
+ */
+function roundToTwoDecimals(x)
+{
+    return Math.round(x*100)/100;
 }
 
+/**
+ * Berechnet Y entweder über die Geradengleichung oder die Quadratische Gleichung
+ * @param a
+ * @param b
+ * @param c
+ * @returns {function(*): *}
+ */
+function howToCalculateY(a, b, c) {
+    if (a == 0) {
+        return function (x) {
+            return b * x + c;
+        }
+    } else {
+        return function (x) {
+            return a * Math.pow(x, 2) + b * x + c;
+        }
+    }
+}
+
+/**
+ * Zeichnet die Nullstellen als rote Kreise mit Radius 3 ein
+ * @param nullstellen
+ */
 function paintNullstellen(nullstellen)
 {
     nullstellen.forEach(x =>
@@ -164,7 +190,7 @@ function paintNullstellen(nullstellen)
                 context.arc(
                     toCanvasX(x),
                     toCanvasY(0),
-                    5,
+                    3,
                     0,
                     2 * Math.PI //https://www.w3schools.com/tags/canvas_arc.asp
                 );
@@ -176,9 +202,5 @@ function paintNullstellen(nullstellen)
     );
 }
 
-//https://www.gutefrage.net/frage/javascript-aufrunden-auf-2-nachkommastellen
-function roundToTwoDecimals(x)
-{
-    return Math.round(x*100)/100;
-}
+
 
