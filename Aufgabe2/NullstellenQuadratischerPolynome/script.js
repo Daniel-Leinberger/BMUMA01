@@ -49,36 +49,8 @@ function nullstellenBerechnen(a, b, c)
         }
     }
 
-    paintCanvas(a,b,c,nullstellen);
+    paintCanvas(a,b,c);
     result.innerHTML = text;
-}
-
-/**
- * @param {number} a
- * @param {number} b
- * @param {number} c
- * @param {any[]} nullstellen
- */
-function paintCanvas(a, b, c, nullstellen){
-    const canvas = document.getElementById("polynom_canvas");
-    const context = canvas.getContext("2d");
-    const min = -10;
-    const max = 10;
-    const toCanvasX = function (x) {
-        return (x + (max - min) / 2) * canvas.width / (max - min);
-    };
-    const toCanvasY = function (y) {
-        return canvas.height - (y + (max - min) / 2) * canvas.height / (max - min);
-    };
-
-    context.beginPath();
-    context.moveTo(toCanvasX(-10), toCanvasY(0));
-    context.lineTo(toCanvasX(10), toCanvasY(0));
-    context.moveTo(toCanvasX(0), toCanvasY(10));
-    context.lineTo(toCanvasX(0), toCanvasY(-10));
-    context.stroke();
-    return;
-
 }
 
 function geradenBerechnung(b, c)
@@ -114,4 +86,63 @@ function mitternachtsformel(a, b, c)
     }
     return nullstellen;
 }
+
+//------------------------------ Canvas ------------------------------
+/*
+ * Konstanten für Canvas werden herausgezogen, damit sie überall verwendet werden können.
+ */
+
+const canvas = document.getElementById("polynom_canvas");
+const context = canvas.getContext("2d");
+const min = -10;
+const max = 10;
+const toCanvasX = function (x) {
+    return (x + (max - min) / 2) * canvas.width / (max - min);
+};
+const toCanvasY = function (y) {
+    return canvas.height - (y + (max - min) / 2) * canvas.height / (max - min);
+};
+
+/**
+ * @param {number} a
+ * @param {number} b
+ * @param {number} c
+ * @param {any[]} nullstellen
+ */
+function paintCanvas(a, b, c){
+
+    context.clearRect(0,0,canvas.width, canvas.height);
+    context.beginPath();
+    context.moveTo(toCanvasX(-10), toCanvasY(0));
+    context.lineTo(toCanvasX(10), toCanvasY(0));
+    context.moveTo(toCanvasX(0), toCanvasY(10));
+    context.lineTo(toCanvasX(0), toCanvasY(-10));
+    context.stroke();
+
+    if(a==0)
+    {
+       paintLine(b,c);
+    }
+    else
+    {
+        paintPolynom(a,b,c);
+    }
+}
+
+function paintLine(b, c) {
+
+    context.beginPath();
+    context.moveTo(toCanvasX(min),toCanvasY(b*min+c));
+    for(let x=min+0.1; x<=max; x+=0.1)
+    {
+        let y = b*x+c;
+        context.lineTo(toCanvasX(x),toCanvasY(y));
+    }
+    context.stroke();
+}
+
+function paintPolynom(a, b, c) {
+
+}
+
 
