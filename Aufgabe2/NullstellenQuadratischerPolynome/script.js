@@ -25,7 +25,8 @@ function nullstellenBerechnen(a, b, c)
     {
         let polynom = b+"x+"+c;
         text = "a = 0! Daher ändert sich das Polynom zu: "+polynom+"<br>";
-        text+="x= "+geradenBerechnung(b, c);
+        nullstellen.push(geradenBerechnung(b,c));
+        text+="x= "+nullstellen.at(0);
     }
     else
     {
@@ -39,7 +40,7 @@ function nullstellenBerechnen(a, b, c)
         else if(nullstellen.length==1)
         {
             text = "Das Polynom "+polynom+" hat die Nullstelle:<br>";
-            text += "x = "+nullstellen.pop();
+            text += "x = "+nullstellen.at(0);
         }
         else {
             text = "Das Polynom " + polynom + " hat die Nullstellen:<br>";
@@ -49,7 +50,7 @@ function nullstellenBerechnen(a, b, c)
         }
     }
 
-    paintCanvas(a,b,c);
+    paintCanvas(a,b,c,nullstellen);
     result.innerHTML = text;
 }
 
@@ -109,7 +110,7 @@ const toCanvasY = function (y) {
  * @param {number} c
  * @param {any[]} nullstellen
  */
-function paintCanvas(a, b, c){
+function paintCanvas(a, b, c,nullstellen){
 
     context.clearRect(0,0,canvas.width, canvas.height);
     context.beginPath();
@@ -127,6 +128,7 @@ function paintCanvas(a, b, c){
     {
         paintPolynom(a,b,c);
     }
+    paintNullstellen(nullstellen);
 }
 
 function paintLine(b, c) {
@@ -135,7 +137,7 @@ function paintLine(b, c) {
     context.moveTo(toCanvasX(min),toCanvasY(b*min+c));
     for(let x=min+0.1; x<=max; x+=0.1)
     {
-        let y = b*x+c;
+        let y = roundToTwoDecimals(b*x+c);
         context.lineTo(toCanvasX(x),toCanvasY(y));
     }
     context.stroke();
@@ -145,4 +147,32 @@ function paintPolynom(a, b, c) {
 
 }
 
+function paintNullstellen(nullstellen)
+{
+    nullstellen.forEach(x =>
+        {
+            if(x>=min && x<=max)
+            {
+                context.beginPath();
+
+                context.arc(
+                    toCanvasX(x),
+                    toCanvasY(0),
+                    5,
+                    0,
+                    2 * Math.PI //https://www.w3schools.com/tags/canvas_arc.asp
+                );
+
+                context.fillStyle = "red";
+                context.fill();
+            }
+        }
+    );
+}
+
+//https://www.gutefrage.net/frage/javascript-aufrunden-auf-2-nachkommastellen
+function roundToTwoDecimals(x)
+{
+    return Math.round(x*100)/100;
+}
 
