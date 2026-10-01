@@ -131,7 +131,9 @@ function paintCanvas(a, b, c,nullstellen){
 
 function paintPolynom(a,b,c)
 {
-    let calculateY = howToCalculateY(a, b, c);
+    let calculateY = function (x) {
+        return a * Math.pow(x, 2) + b * x + c;
+    }
 
     context.beginPath();
     context.moveTo(toCanvasX(min),toCanvasY(calculateY(min)));
@@ -156,24 +158,6 @@ function roundToTwoDecimals(x)
     return Math.round(x*100)/100;
 }
 
-/**
- * Berechnet Y entweder über die Geradengleichung oder die Quadratische Gleichung
- * @param a
- * @param b
- * @param c
- * @returns {function(*): *}
- */
-function howToCalculateY(a, b, c) {
-    if (a == 0) {
-        return function (x) {
-            return b * x + c;
-        }
-    } else {
-        return function (x) {
-            return a * Math.pow(x, 2) + b * x + c;
-        }
-    }
-}
 
 /**
  * Zeichnet die Nullstellen als rote Kreise mit Radius 3 ein
