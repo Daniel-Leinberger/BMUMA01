@@ -132,7 +132,6 @@ function paintCanvas(a, b, c,nullstellen){
 }
 
 function paintLine(b, c) {
-
     context.beginPath();
     context.moveTo(toCanvasX(min),toCanvasY(b*min+c));
     for(let x=min+0.1; x<=max; x+=0.1)
@@ -144,7 +143,14 @@ function paintLine(b, c) {
 }
 
 function paintPolynom(a, b, c) {
-
+    context.beginPath();
+    context.moveTo(toCanvasX(min),toCanvasY(a*Math.pow(min,2)+b*min+c));
+    for(let x=min+0.1; x<=max; x+=0.1)
+    {
+        let y = roundToTwoDecimals(a*Math.pow(x,2)+b*x+c);
+        context.lineTo(toCanvasX(x),toCanvasY(y));
+    }
+    context.stroke();
 }
 
 function paintNullstellen(nullstellen)
