@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Meine Todos</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<main>
+    <h1>Meine Todos</h1>
+    <h2> Neues Todo anlegen </h2>
+
+
+    <form action="/newtodo" method="post">
+        <div>
+            <label for="todo">Text:</label>
+
+            <input
+                id="todo"
+                name="todo"
+                type="text"
+            >
+        </div>
+
+        <button type="submit">
+           Neues Todo erstellen
+        </button>
+    </form>
+
+    <h2>Offene Todos</h2>
+        <button type="submit">
+           Todo erledigt
+        </button>
+    <h2>Erledigte Todos</h2>
+</main>
+
+</body>
+</html>

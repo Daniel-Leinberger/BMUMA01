@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #f3f3f3;
+}
+
+main {
+    max-width: 600px;
+    padding: 24px;
+    background-color: white;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+}
+
+form {
+    margin-top: 24px;
+}
+
+input {
+    margin-left: 8px;
+    padding: 6px;
+}
+
+button{
+    margin-top: 10px;
+}
