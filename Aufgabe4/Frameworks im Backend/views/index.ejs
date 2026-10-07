@@ -29,23 +29,25 @@
     </form>
 
     <h2>Offene Todos</h2>
-        <ul>
-            <% openTodos.forEach(todo => { %>
-                <li><input type="checkbox"><label> <%= todo %></label></li>
-            <% }); %>
-        </ul>
+		<form action="/closetodo" method="post">
+            <ul>
+                <% openTodos.forEach(todo => { %>
+                    <li>
+						<input type="checkbox"  name="todo" value="<%= todo %>"">
+						<label> <%= todo %></label>
+					</li>
+                <% }); %>
+            </ul>
 
-        <button type="submit">
-           Todo erledigt
-        </button>
+            <button type="submit">
+                Todo erledigt
+            </button>
+		</form>
 
     <h2>Erledigte Todos</h2>
         <ul>
-			<% closedTodos.forEach(todo => { %
-                <li>
-					<input type="checkbox">
-					<label> <%= todo %></label>
-				</li>
+			<% closedTodos.forEach(todo => { %>
+                <li> <%= todo %> </li>
             <% }); %>
         </ul>
 

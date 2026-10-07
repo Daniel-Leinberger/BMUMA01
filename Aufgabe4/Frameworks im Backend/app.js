@@ -27,7 +27,7 @@ app.post("/newtodo", (request, response) => {
     console.log("POST /newtodo wurde aufgerufen.");
     console.log("Empfangene Formulardaten:", request.body);
 
-    let todo =
+    const todo =
         typeof request.body.todo === "string"
             ? request.body.todo.trim()
             : "";
@@ -36,6 +36,34 @@ app.post("/newtodo", (request, response) => {
 
     response.redirect("/");
 });
+
+app.post("/closetodo", (request,response) =>{
+    console.log("POST /closetodo wurde aufgerufen.");
+    console.log("Folgende Todos wurden abgeschlossen:", request.body);
+
+    const submittedTodos  = request.body.todo;
+    let selectedTodos = [];
+
+    if (submittedTodos === undefined) {
+        selectedTodos = [];
+    } else if (Array.isArray(submittedTodos)) {
+        selectedTodos = submittedTodos;
+    } else {
+        selectedTodos = [submittedTodos];
+    }
+
+    selectedTodos.forEach(todo => {
+
+        let todoToClose = todo + " done at: " + new Date().toLocaleString("de-De");
+        closedTodos.push(todoToClose);
+
+        let index = openTodos.indexOf(todo);
+        openTodos.splice(index, 1);
+    });
+
+    response.redirect("/");
+});
+
 
 app.listen(port, () => {
     console.log(
