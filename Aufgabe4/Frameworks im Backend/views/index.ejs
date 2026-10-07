@@ -29,10 +29,26 @@
     </form>
 
     <h2>Offene Todos</h2>
+        <ul>
+            <% openTodos.forEach(todo => { %>
+                <li><input type="checkbox"><label> <%= todo %></label></li>
+            <% }); %>
+        </ul>
+
         <button type="submit">
            Todo erledigt
         </button>
+
     <h2>Erledigte Todos</h2>
+        <ul>
+			<% closedTodos.forEach(todo => { %
+                <li>
+					<input type="checkbox">
+					<label> <%= todo %></label>
+				</li>
+            <% }); %>
+        </ul>
+
 </main>
 
 </body>
