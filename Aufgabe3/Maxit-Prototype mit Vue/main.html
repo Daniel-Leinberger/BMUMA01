@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Maxit</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js" defer></script>
+	<script src="script.js" defer></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Maxit</h1>
+<div id="app">
+	Score Player1: {{scorePlayer1}}
+	<br>
+	Score Player2: {{scorePlayer2}}
+	<br><br>
+	<div class="flex-container">
+		<div
+			v-for="(card,index) in pictureCards"
+			:key="index"
+			@click="clickMethod(index)"
+		>
+			<img v-if="isDiscovered(index)"
+				 :src="background"/>
+
+			<img v-else-if="isActiveRowColumn(index)"
+				 :src="card.pic" />
+
+			<img v-else
+				 :src="card.pic"
+				 class="blur"/>
+		</div>
+	</div>
+</div>
+</body>
+</html>

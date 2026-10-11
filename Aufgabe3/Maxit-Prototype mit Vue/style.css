@@ -1,0 +1,15 @@
+img {
+    width: 100px;
+}
+
+.blur{
+    filter: opacity(50%);
+}
+
+.flex-container{
+    display: flex;
+    width: 840px;
+    gap: 5px;
+    justify-content: space-around;
+    flex-flow: row wrap;
+}
