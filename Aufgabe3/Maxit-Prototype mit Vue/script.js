@@ -31,69 +31,76 @@ var app= new Vue({
         isDiscovered(index){
             return this.pictureCards[index].discovered;
         },
+        move(index) {
+            let columnIndex = this.getColumnIndex(index);
+            let rowIndex = this.getRowIndex(index);
+            console.log("Hier wurde geklickt. Spalte: " + columnIndex + " Zeile: " + rowIndex);
+
+            let card = this.pictureCards[index];
+            card.discovered = true;
+
+            let value = card.value;
+            switch (this.activePlayer) {
+                case 0:
+                    this.scorePlayer1 += value;
+                    this.activePlayer = 1;
+                    break;
+                case 1:
+                    this.scorePlayer2 += value;
+                    this.activePlayer = 0;
+                    break;
+            }
+            this.activeColumn = this.getColumnIndex(index);
+            console.log("Neue aktive Spalte: " + this.activeColumn);
+            this.activeRow = this.getRowIndex(index);
+            console.log("Neue aktive Zeile: " + this.activeRow);
+        },
         clickMethod(index){
             if(!this.isDiscovered(index)&&this.isActiveRowColumn(index))
             {
-                let columnIndex=this.getColumnIndex(index);
-                let rowIndex=this.getRowIndex(index);
-                console.log("Hier wurde geklickt. Spalte: "+columnIndex+" Zeile: "+rowIndex);
-
-                let card = this.pictureCards[index];
-                card.discovered = true;
-
-                let value = card.value;
-                switch(this.activePlayer){
-                    case 0:
-                        this.scorePlayer1 += value;
-                        this.activePlayer = 1;
-                        break;
-                    case 1:
-                        this.scorePlayer2 += value;
-                        this.activePlayer = 0;
-                        break;
-                }
-                this.activeColumn=this.getColumnIndex(index);
-                console.log("Neue aktive Spalte: "+this.activeColumn);
-                this.activeRow = this.getRowIndex(index);
-                console.log("Neue aktive Zeile: "+this.activeRow);
+                this.move(index);
 
                 if (this.isGameOver())
                 {
                     this.gameOver = true;
                     this.gameOverMessage = this.getWinnerMessage();
                 }
+                else if(this.activePlayer===1){
+                    this.computerMove();
+                }
             }
             /* TODO: implement b)*/
         },
         computerMove(){
             /* TODO: implement b)*/
-    
+            let bestIndex = this.maxColumnValue(this.activeColumn);
+            this.move(bestIndex);
+
 
         },
         maxColumnValue(columnIndex){
-            let maxValues = [];
+            let maxValueIndex = -1;
+            let highestWinValue= Number.MIN_SAFE_INTEGER;
+
             for (let row = 0; row < this.gridSize; row++)
             {
                 const index = row * this.gridSize + columnIndex;
-                if(maxValues===[])
+                let card = this.pictureCards[index];
+                if(card.discovered)
                 {
-                    maxValues.push(this.pictureCards[index]);
+                    //Wenn es schon gewählt wurde, können wir es nicht auswählen.
+                    continue;
                 }
-                else if(maxValues.at(0).value<this.pictureCards[index].value)
+
+                let maxRowValue = this.maxRowValue(row)
+                if(highestWinValue<(card.value-maxRowValue))
                 {
-                    //Sollten mehr als eine Karte mit vorherigen maxValues enthalten sein
-                    //Einfach komplett alles löschen, da wir eine neue maxValue haben.
-                    maxValues=[];
-                    maxValues.push(this.pictureCards[index]);
-                }
-                else if(maxValues.at(0).value===this.pictureCards[index].value)
-                {
-                    //Mehrere Karten mit gleichen maxValues
-                    maxValues.push(this.pictureCards[index]);
+                    maxValueIndex=index;
+                    highestWinValue=card.value-maxRowValue;
                 }
             }
-            console.log("Der höchste Wert der Spalte ist: "+maxValues.at(0).value);
-            return maxValues;
+            console.log("Der höchste Wert der Spalte ist: "+this.pictureCards[maxValueIndex].value);
+            return maxValueIndex;
         },
         maxRowValue(rowIndex){
             let maxValue = null;
@@ -107,13 +114,19 @@ var app= new Vue({
                 }
 
                 const index = rowIndex * this.gridSize + column;
+                let card = this.pictureCards[index];
+                if(card.discovered)
+                {
+                    //Wenn es schon gewählt wurde, können wir es nicht auswählen.
+                    continue;
+                }
                 if(maxValue===null)
                 {
-                    maxValue=index;
+                    maxValue=card.value;
                 }
-                else if(maxValue<index)
+                else if(maxValue<card.value)
                 {
-                    maxValue=index;
+                    maxValue=card.value;
                 }
             }
             console.log("Der höchste Wert der Zeile ist: "+maxValue);
