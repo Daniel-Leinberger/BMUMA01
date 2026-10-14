@@ -53,7 +53,9 @@ var app= new Vue({
                         break;
                 }
                 this.activeColumn=this.getColumnIndex(index);
+                console.log("Neue aktive Spalte: "+this.activeColumn);
                 this.activeRow = this.getRowIndex(index);
+                console.log("Neue aktive Zeile: "+this.activeRow);
 
                 if (this.isGameOver())
                 {
@@ -61,16 +63,61 @@ var app= new Vue({
                     this.gameOverMessage = this.getWinnerMessage();
                 }
             }
-            /* TODO: implement a/b)*/
+            /* TODO: implement b)*/
         },
         computerMove(){
             /* TODO: implement b)*/
+    
+
         },
         maxColumnValue(columnIndex){
-            /* TODO: implement b)*/
+            let maxValues = [];
+            for (let row = 0; row < this.gridSize; row++)
+            {
+                const index = row * this.gridSize + columnIndex;
+                if(maxValues===[])
+                {
+                    maxValues.push(this.pictureCards[index]);
+                }
+                else if(maxValues.at(0).value<this.pictureCards[index].value)
+                {
+                    //Sollten mehr als eine Karte mit vorherigen maxValues enthalten sein
+                    //Einfach komplett alles löschen, da wir eine neue maxValue haben.
+                    maxValues=[];
+                    maxValues.push(this.pictureCards[index]);
+                }
+                else if(maxValues.at(0).value===this.pictureCards[index].value)
+                {
+                    //Mehrere Karten mit gleichen maxValues
+                    maxValues.push(this.pictureCards[index]);
+                }
+            }
+            console.log("Der höchste Wert der Spalte ist: "+maxValues.at(0).value);
+            return maxValues;
         },
         maxRowValue(rowIndex){
-            /* TODO: implement b)*/
+            let maxValue = null;
+            for (let column = 0; column < this.gridSize; column++)
+            {
+                //Überspringt, die Punktkarte in der aktuell aktiven Spalte,
+                //da diese bei der Wahl des Computers nicht mehr vom Spieler verwendet werden kann.
+                if(column===this.activeColumn)
+                {
+                    continue;
+                }
+
+                const index = rowIndex * this.gridSize + column;
+                if(maxValue===null)
+                {
+                    maxValue=index;
+                }
+                else if(maxValue<index)
+                {
+                    maxValue=index;
+                }
+            }
+            console.log("Der höchste Wert der Zeile ist: "+maxValue);
+            return maxValue;
         },
         isGameOver(){
 
