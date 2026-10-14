@@ -9,7 +9,9 @@ var app= new Vue({
         background: 'img/invis.gif',
         pictureCards: [],
         discoveredCards: 0,
-        gridSize: 8
+        gridSize: 8,
+        gameOver: false,
+        gameOverMessage: ""
     },
     methods: {
         getColumnIndex(index){
@@ -52,9 +54,13 @@ var app= new Vue({
                 }
                 this.activeColumn=this.getColumnIndex(index);
                 this.activeRow = this.getRowIndex(index);
+
+                if (this.isGameOver())
+                {
+                    this.gameOver = true;
+                    this.gameOverMessage = this.getWinnerMessage();
+                }
             }
-
-
             /* TODO: implement a/b)*/
         },
         computerMove(){
@@ -65,6 +71,52 @@ var app= new Vue({
         },
         maxRowValue(rowIndex){
             /* TODO: implement b)*/
+        },
+        isGameOver(){
+
+            let gameOver = true;
+
+            if (this.activePlayer === 0)
+            {
+                for (let column = 0; column < this.gridSize; column++)
+                {
+                    const index = this.activeRow * this.gridSize + column;
+
+                    if (!this.pictureCards[index].discovered)
+                    {
+                        gameOver = false;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (let row = 0; row < this.gridSize; row++)
+                {
+                    const index = row * this.gridSize + this.activeColumn;
+
+                    if (!this.pictureCards[index].discovered)
+                    {
+                        gameOver = false;
+                        break;
+                    }
+                }
+            }
+
+            return gameOver;
+        },
+        getWinnerMessage() {
+            if (this.scorePlayer1 > this.scorePlayer2)
+            {
+                return "Glückwunsch! Spieler 1 hat mit "+this.scorePlayer1+" Punkten gewonnen!";
+            }
+
+            if (this.scorePlayer2 > this.scorePlayer1)
+            {
+                return "Glückwunsch! Spieler 2 hat mit "+this.scorePlayer2+" Punkten gewonnen!";
+            }
+
+            return "Das Spiel endet unentschieden.";
         }
     },
     mounted(){
