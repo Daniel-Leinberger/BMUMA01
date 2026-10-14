@@ -54,25 +54,28 @@ var app= new Vue({
             console.log("Neue aktive Spalte: " + this.activeColumn);
             this.activeRow = this.getRowIndex(index);
             console.log("Neue aktive Zeile: " + this.activeRow);
+
+            if (this.isGameOver())
+            {
+                this.gameOver = true;
+                this.gameOverMessage = this.getWinnerMessage();
+            }
         },
         clickMethod(index){
+            if(this.gameOver||this.activePlayer!==0)
+            {
+                return;
+            }
             if(!this.isDiscovered(index)&&this.isActiveRowColumn(index))
             {
                 this.move(index);
-
-                if (this.isGameOver())
+                if(!this.gameOver())
                 {
-                    this.gameOver = true;
-                    this.gameOverMessage = this.getWinnerMessage();
-                }
-                else if(this.activePlayer===1){
                     this.computerMove();
                 }
             }
-            /* TODO: implement b)*/
         },
         computerMove(){
-            /* TODO: implement b)*/
             let bestIndex = this.maxColumnValue(this.activeColumn);
             this.move(bestIndex);
 
