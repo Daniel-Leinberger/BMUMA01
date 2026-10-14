@@ -30,6 +30,31 @@ var app= new Vue({
             return this.pictureCards[index].discovered;
         },
         clickMethod(index){
+            if(!this.isDiscovered(index)&&this.isActiveRowColumn(index))
+            {
+                let columnIndex=this.getColumnIndex(index);
+                let rowIndex=this.getRowIndex(index);
+                console.log("Hier wurde geklickt. Spalte: "+columnIndex+" Zeile: "+rowIndex);
+
+                let card = this.pictureCards[index];
+                card.discovered = true;
+
+                let value = card.value;
+                switch(this.activePlayer){
+                    case 0:
+                        this.scorePlayer1 += value;
+                        this.activePlayer = 1;
+                        break;
+                    case 1:
+                        this.scorePlayer2 += value;
+                        this.activePlayer = 0;
+                        break;
+                }
+                this.activeColumn=this.getColumnIndex(index);
+                this.activeRow = this.getRowIndex(index);
+            }
+
+
             /* TODO: implement a/b)*/
         },
         computerMove(){
